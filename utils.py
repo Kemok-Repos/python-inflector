@@ -10,15 +10,20 @@ def unicodify(st):
     @return a tuple with the unicodified string and the original string encoding.
     '''
 
-    # Convert 'st' to Unicode
-    if isinstance(st, unicode):
-        origType = 'unicode'
-    elif isinstance(st, str):
+    import unicodedata
+
+def unicodify(st):
+    # Verificar si la cadena es de tipo str (Unicode en Python 3)
+    if isinstance(st, str):
+        origType = 'str'
+    elif isinstance(st, bytes):
         try:
-            st = st.decode('utf8')
-            origType = 'utf8'
+            # Decodificar la cadena de bytes a Unicode utilizando utf-8
+            st = st.decode('utf-8')
+            origType = 'utf-8'
         except UnicodeDecodeError:
             try:
+                # Si falla la decodificación utf-8, intentar decodificarla utilizando latin-1
                 st = st.decode('latin1')
                 origType = 'latin1'
             except:
@@ -26,7 +31,7 @@ def unicodify(st):
     else:
         origType = 'noConversion'
 
-    # Normalize the Unicode (to combine any combining characters, e.g. accents, into the previous letter)
+    # Normalizar el Unicode (para combinar cualquier caracter que se combine, por ejemplo, acentos, en la letra anterior)
     if origType != 'noConversion':
         st = unicodedata.normalize('NFKC', st)
 
@@ -39,6 +44,10 @@ def deunicodify(unicodifiedStr, origType):
     '''
 
     if origType == 'unicode':
+        return unicodifiedStr
+    
+    # Si origType es 'str', simplemente devuelve la cadena sin codificarla nuevamente
+    if origType == 'str':
         return unicodifiedStr
 
     return unicodifiedStr.encode(origType)

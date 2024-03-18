@@ -10,7 +10,7 @@
 # (BSD-style).
 
 import re
-from base import Base
+from .base import Base
 import utils
 
 
@@ -77,7 +77,7 @@ class Spanish (Base):
             if lower_cased_word[-1 * len(uncountable_word):] == uncountable_word:
                 return utils.deunicodify(word, origType)
 
-        for irregular_singular, irregular_plural in self.irregular_words.iteritems():
+        for irregular_singular, irregular_plural in self.irregular_words.items():
             match = re.search(u'(?i)(^' + irregular_singular + u')$', word, re.IGNORECASE)
             if match:
                 result = re.sub(u'(?i)' + irregular_singular + u'$', match.expand(u'\\1')[0] + irregular_plural[1:], word)
@@ -90,7 +90,7 @@ class Spanish (Base):
                 replacement = rule[1]
                 if re.match(u'\|', replacement):
                     for k in range(1, len(groups)):
-                        replacement = replacement.replace(u'|' + unicode(
+                        replacement = replacement.replace(u'|' + str(
                             k), self.string_replace(groups[k - 1], u'ÁÉÍÓÚáéíóú', u'AEIOUaeiou'))
 
                 result = re.sub(rule[0], replacement, word)
@@ -117,19 +117,19 @@ class Spanish (Base):
         word, origType = utils.unicodify(word)  # all internal calculations are done in Unicode
 
         rules = [
-            [ur'(?i)^([bcdfghjklmnñpqrstvwxyz]*)([aeiou])([ns])es$', u'\\1\\2\\3'],
-            [ur'(?i)([aeiou])([ns])es$', u'~1\\2'],
-            [ur'(?i)shes$', u'sh'],             # flashes->flash
-            [ur'(?i)oides$', u'oide'],          # androides->androide
-            [ur'(?i)(sis|tis|xis)$', u'\\1'],   # crisis, apendicitis, praxis
-            [ur'(?i)(é)s$', u'\\1'],            # bebés->bebé
-            [ur'(?i)(ces)$', u'z'],             # luces->luz
-            [ur'(?i)([^e])s$', u'\\1'],         # casas->casa
-            [ur'(?i)([bcdfghjklmnñprstvwxyz]{2,}e)s$', u'\\1'],  # cofres->cofre
-            [ur'(?i)([ghñptv]e)s$', u'\\1'],    # llaves->llave, radiocasetes->radiocasete
-            [ur'(?i)jes$', u'je'],              # ejes->eje
-            [ur'(?i)ques$', u'que'],            # tanques->tanque
-            [ur'(?i)es$', u'']                  # ELSE remove _es_  monitores->monitor
+            [r'(?i)^([bcdfghjklmnñpqrstvwxyz]*)([aeiou])([ns])es$', u'\\1\\2\\3'],
+            [r'(?i)([aeiou])([ns])es$', r'~1\2'],
+            [r'(?i)shes$', u'sh'],             # flashes->flash
+            [r'(?i)oides$', u'oide'],          # androides->androide
+            [r'(?i)(sis|tis|xis)$', u'\\1'],   # crisis, apendicitis, praxis
+            [r'(?i)(é)s$', u'\\1'],            # bebés->bebé
+            [r'(?i)(ces)$', u'z'],             # luces->luz
+            [r'(?i)([^e])s$', u'\\1'],         # casas->casa
+            [r'(?i)([bcdfghjklmnñprstvwxyz]{2,}e)s$', u'\\1'],  # cofres->cofre
+            [r'(?i)([ghñptv]e)s$', u'\\1'],    # llaves->llave, radiocasetes->radiocasete
+            [r'(?i)jes$', u'je'],              # ejes->eje
+            [r'(?i)ques$', u'que'],            # tanques->tanque
+            [r'(?i)es$', u'']                  # ELSE remove _es_  monitores->monitor
         ]
 
         lower_cased_word = word.lower()
@@ -138,7 +138,7 @@ class Spanish (Base):
             if lower_cased_word[-1 * len(uncountable_word):] == uncountable_word:
                 return utils.deunicodify(word, origType)
 
-        for irregular_singular, irregular_plural in self.irregular_words.iteritems():
+        for irregular_singular, irregular_plural in self.irregular_words.items():
             match = re.search(u'(^' + irregular_plural + u')$', word, re.IGNORECASE)
             if match:
                 result = re.sub(u'(?i)' + irregular_plural + u'$', match.expand(u'\\1')[0] + irregular_singular[1:], word)
@@ -151,7 +151,7 @@ class Spanish (Base):
                 replacement = rule[1]
                 if re.match(u'~', replacement):
                     for k in range(1, len(groups)):
-                        replacement = replacement.replace(u'~' + unicode(
+                        replacement = replacement.replace(u'~' + str(
                             k), self.string_replace(groups[k - 1], u'AEIOUaeiou', u'ÁÉÍÓÚáéíóú'))
 
                 result = re.sub(rule[0], replacement, word)
@@ -166,8 +166,6 @@ class Spanish (Base):
                 return utils.deunicodify(result, origType)
 
         return utils.deunicodify(word, origType)
-
-
 # Copyright (c) 2006 Bermi Ferrer Martinez
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software to deal in this software without restriction, including
@@ -183,4 +181,3 @@ class Spanish (Base):
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THIS SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THIS SOFTWARE.
-
