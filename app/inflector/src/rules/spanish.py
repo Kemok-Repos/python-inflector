@@ -1,18 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# coding=utf-8
-# Copyright (c) 2006 Bermi Ferrer Martinez
-# Copyright (c) 2006 Carles Sadurní Anguita
-#
-# bermi a-t bermilabs - com
-#
-# See the end of this file for the free software, open source license
-# (BSD-style).
-
 import re
 from .base import Base
-import utils
-
+from .. import utils
 
 class Spanish (Base):
     '''
